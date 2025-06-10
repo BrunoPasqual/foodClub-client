@@ -1,0 +1,39 @@
+name: Gerar Tags de Versão
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  tag-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0' 
+
+      - name: Configurar Git para Ação de Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Incrementar Versão e Criar Tag
+        id: create_tag
+        uses: anothrNick/github-tag-action@v1.61.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+
+      - name: Exibir Nova Tag Criada
+        run: |
+          echo "Nova Tag Criada: ${{ steps.create_tag.outputs.new_tag }}"
