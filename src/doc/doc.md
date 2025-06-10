@@ -6,5 +6,5 @@ Tecnologias utilizadas
  <li> react-router </li> 
  <li> zustand </li> 
  <li> ver sobre configurar para tirar console.log, props não utilizadas, etc do projeto </li> 
-dsa
+dsaa
  </ul>
