@@ -28,7 +28,7 @@ jobs:
 
       - name: Incrementar Versão e Criar Tag
         id: create_tag
-        uses: anothrNick/github-tag-action@v1.73.0
+        uses: anothrNick/github-tag-action@v1.71.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
