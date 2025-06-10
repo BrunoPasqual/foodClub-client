@@ -1,39 +1,21 @@
-name: Gerar Tags de Versão
-
+# example 1: on push to master
+name: Bump version
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
 jobs:
-  tag-version:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
-      id-token: write
-
     steps:
-      - name: Checkout do Código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: '0' 
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: '0'
 
-      - name: Configurar Git para Ação de Tag
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Incrementar Versão e Criar Tag
-        id: create_tag
-        uses: anothrNick/github-tag-action@v1.71.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: patch
-
-      - name: Exibir Nova Tag Criada
-        run: |
-          echo "Nova Tag Criada: ${{ steps.create_tag.outputs.new_tag }}"
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
